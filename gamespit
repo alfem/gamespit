@@ -1,0 +1,54 @@
+#!/usr/bin/python
+# -*- coding: utf8 -*-
+
+# gamespit
+# games platform for kids using Raspberry Pi
+# Author: Alfonso E.M. <alfonso@el-magnifico.org>
+# License: Free (GPL2) 
+# Version: 1.0 - 27/Feb/2013
+
+
+from configobj import ConfigObj
+import imp
+import sys
+import os
+
+sys.path.append("./lib")
+sys.path.append("./games") 
+
+import Gui
+import Controls
+
+# Load a module or plugin dinamically
+def load_game(name, game_conf, display, controller):
+
+        game_conf=ConfigObj(game_conf)
+
+        fp, pathname, description = imp.find_module(name)
+        try:
+          module=imp.load_module(name, fp, pathname, description)
+          module.main(game_conf, display, controller)
+        finally:
+          if fp:
+            fp.close()
+
+# Main
+def main():
+# Load main config file
+    CONF = ConfigObj("gamespit.conf")
+
+# Create a Graphic User Interface
+    display = Gui.Display(CONF["DISPLAY"])
+
+# Create a Controller (keyboard, joystick..)
+    controller = Controls.Control(CONF["CONTROL"])
+
+# Load the main menu (main menu is a game itself)
+    game_conf=os.path.join(CONF["base_path"],"menu","game.conf")
+    print game_conf
+    load_game("menu", game_conf, display, controller)
+
+
+if __name__ == '__main__':
+  main()
+ 
