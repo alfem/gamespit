@@ -22,15 +22,20 @@ import Controls
 # Load a module or plugin dinamically
 def load_game(name, game_conf, display, controller):
 
+        print "Loading game:", name 
         game_conf=ConfigObj(game_conf)
 
         fp, pathname, description = imp.find_module(name)
         try:
           module=imp.load_module(name, fp, pathname, description)
-          module.main(game_conf, display, controller)
+          result=module.main(game_conf, display, controller) 
+        except Exception as e:
+          print "ERROR", e
+          result="ERROR"
         finally:
           if fp:
             fp.close()
+        return result
 
 # Main
 def main():
@@ -43,10 +48,15 @@ def main():
 # Create a Controller (keyboard, joystick..)
     controller = Controls.Control(CONF["CONTROL"])
 
+    while True:
 # Load the main menu (main menu is a game itself)
-    game_conf=os.path.join(CONF["base_path"],"menu","game.conf")
-    print game_conf
-    load_game("menu", game_conf, display, controller)
+        game_conf=os.path.join(CONF["base_path"], "menu", "game.conf")
+        new_game=load_game("menu", game_conf, display, controller)
+
+# Load selected game
+        if new_game:
+            game_conf=os.path.join(CONF["base_path"], new_game, "game.conf")
+            new_game=load_game(new_game, game_conf, display, controller)
 
 
 if __name__ == '__main__':

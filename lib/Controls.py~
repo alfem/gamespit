@@ -28,7 +28,7 @@ class Control:
                 if key_mods & KMOD_LSHIFT and key_name == 'escape':
                     sys.exit(0)
                 return "K",key_name,key_mods
-        return "N"
+        return 
  
 # Stop until user press a key or a mouse button
     def wait_for_user_action(self):

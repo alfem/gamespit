@@ -70,6 +70,17 @@ class Display:
         rtext = font.render(text, 1, color)
         self.screen.blit(rtext, (x,y))
         
+# Draw a box with a frame
+    def draw_box(self,coords,active):
+        rectangle=pygame.Rect(coords)
+        if active:
+            self.screen.fill(self.decoration_color_active,rectangle)
+            rectangle.inflate_ip(-15, -15)
+            self.screen.fill(self.front_color_active,rectangle)
+        else:
+            self.screen.fill(self.decoration_color,rectangle)
+            rectangle.inflate_ip(-15, -15)
+            self.screen.fill(self.front_color,rectangle)
 
     
  
