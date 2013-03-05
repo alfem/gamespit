@@ -9,6 +9,7 @@
 
 import pygame
 import os
+import inspect
 
 class Game:    
     '''
@@ -33,13 +34,14 @@ class Game:
         self.FONTS={} 
         self.COLORS={}
 
-        self.convert_colors(CONF["COLORS"])
+        base_path=os.path.dirname(inspect.stack()[1][1])
 
+        self.convert_colors(CONF["COLORS"])
 #       Automagically load files into python objects (inspired on the "on rails" way)
-        self.autoload_images(os.path.join(self.CONF["GAME"]["base_path"],"images"))
-        self.autoload_sounds(os.path.join(self.CONF["GAME"]["base_path"],"sounds"))
+        self.autoload_images(os.path.join(base_path,"images"))
+        self.autoload_sounds(os.path.join(base_path,"sounds"))
         if "font_sizes" in CONF["GAME"]:
-            self.autoload_fonts(os.path.join(self.CONF["GAME"]["base_path"],"fonts"),CONF["GAME"]["font_sizes"])
+            self.autoload_fonts(os.path.join(base_path,"fonts"),CONF["GAME"]["font_sizes"])
 
 #       Activate mouse pointer
         if CONF["GAME"]["mouse"] == "True":

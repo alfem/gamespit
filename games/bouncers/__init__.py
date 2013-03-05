@@ -46,6 +46,8 @@ class Menu(Game):
               key_name,key_modifiers=user_input[1:]
 
               if key_name:
+                if key_name == "escape":
+                    break
                 which +=1
                 if which == len(animals):
                     which = 0

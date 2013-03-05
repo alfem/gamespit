@@ -22,20 +22,21 @@ import Controls
 # Load a module or plugin dinamically
 def load_game(name, game_conf, display, controller):
 
-        print "Loading game:", name 
-        game_conf=ConfigObj(game_conf)
+    print "Loading game:", name 
+    game_conf=ConfigObj(game_conf)
 
-        fp, pathname, description = imp.find_module(name)
-        try:
-          module=imp.load_module(name, fp, pathname, description)
-          result=module.main(game_conf, display, controller) 
-        except Exception as e:
-          print "ERROR", e
-          result="ERROR"
-        finally:
-          if fp:
-            fp.close()
-        return result
+    fp, pathname, description = imp.find_module(name)
+    try:
+      module=imp.load_module(name, fp, pathname, description)
+      result=module.main(game_conf, display, controller) 
+    except Exception as e:
+      print "ERROR:", e, e.args
+      result="ERROR"
+    finally:
+      if fp:
+        fp.close()
+    return result
+
 
 # Main
 def main():

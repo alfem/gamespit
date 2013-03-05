@@ -18,25 +18,29 @@ class MenuItem:
     def __init__(self, name, base_path):
         conf = ConfigObj(os.path.join(base_path,"game.conf"))
         self.name=name
-        self.title=conf["GAME"]["title"] #unused currently
+        self.title=conf["GAME"]["title"]
         self.screenshot=pygame.image.load(os.path.join(base_path,"screenshot.png"))
-        self.base_path=base_path
 
 
 class Menu(Game):
 
     def start(self):
-      self.DISPLAY.print_text("GAMES PIT",1,1,self.FONTS["FreeSans80"], self.COLORS['title'])
 
+      self.DISPLAY.print_text("GAMES PIT",self.FONTS["Famig___100"], self.COLORS['title'])
+      self.DISPLAY.show()        
+    
       self.menu_items=[]
       self.index=0
 
-      games_dir_name=os.path.join(self.CONF["GAME"]["base_path"],"..")
+      games_dir_name=os.path.join(os.path.dirname(__file__),"..")
+
       if os.path.isdir(games_dir_name):
           dir_list=os.listdir(games_dir_name)
           for game in dir_list:
               if game != "menu":
                   self.menu_items.append(MenuItem(game, os.path.join(games_dir_name,game))) 
+
+      self.wait(1000)
  
 
 # Converts screen index to screen coordinates
@@ -73,7 +77,7 @@ class Menu(Game):
                   x=c*250+50
                   y=l*190+40
                   self.DISPLAY.print_image(self.menu_items[index].screenshot, x, y)
-                  self.DISPLAY.print_text(self.menu_items[index].title, x, y,self.FONTS['FreeSans20'],self.COLORS['title'])
+                  self.DISPLAY.print_text(self.menu_items[index].title, self.FONTS['FreeSans25'],self.COLORS['game'], x, y,)
 
 # LOOP THRU ITEMS IN A PAGE
           while True:  
@@ -85,6 +89,7 @@ class Menu(Game):
               self.DISPLAY.show()        
 
               user_input=self.CONTROLLER.wait_for_user_action()
+              print user_input
 
               self.DISPLAY.print_image(buffer, x, y)
 
@@ -94,37 +99,48 @@ class Menu(Game):
                   key_name,key_modifiers=user_input[1:]
                   if key_name == 'right' and c < 2:
                     selected_index += 1
-                  if key_name == 'left' and c > 0:
+                  elif key_name == 'left' and c > 0:
                     selected_index -= 1
-                  if key_name == 'up':
+                  elif key_name == 'up':
                       if l == 0:
                           if offset > 0:
-                              offset=offset - 9
+                              offset -= 9
                               selected_index += 6
                               break
                       else:
                           selected_index -= 3
-                  if key_name == 'down':
+                  elif key_name == 'down':
                       if l == 2:
                           if offset < len(self.menu_items) - 9: 
-                              offset=offset + 9
+                              offset += 9
                               selected_index -= 6
                               break
                       else:
                           selected_index += 3
-                  if key_name == 'return':
+                      print "what!"
+                  elif key_name == 'return':
                       return self.menu_items[index].name
 
 
               if controller_type == "M": #Mouse
                   coords,button=user_input[1:]  
-                  index=self.coords2index(offset, coords)
-                  if index:
-                      return self.menu_items[index].name
+                  if button == 4: #Mouse Wheel UP
+                      if offset > 0:
+                          offset -= 9
+                          selected_index = 0
+                          break
+                  elif button == 5: #Mouse Wheel DOWN
+                      if offset < len(self.menu_items) - 9: 
+                          offset += 9
+                          selected_index = 0
+                          break
+                  else:
+                      index=self.coords2index(offset, coords)
+                      if index:
+                          return self.menu_items[index].name
 
 # Main
 def main(CONF, DISPLAY, CONTROLLER):
-
     menu=Menu(CONF,DISPLAY,CONTROLLER)
     menu.start()
     game_to_launch=menu.loop()

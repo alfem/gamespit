@@ -65,9 +65,13 @@ class Display:
         self.screen.blit(image, (x,y))
         return current_content
 
-# Print a text string
-    def print_text(self, text, x, y, font, color):
+# Print a text string, centered as default
+    def print_text(self, text, font, color=(0,0,0), x=-1, y=-1):
         rtext = font.render(text, 1, color)
+        if x == -1:
+            x=self.centerx - rtext.get_width() / 2
+        if y == -1:
+            y=self.centery - rtext.get_height() / 2
         self.screen.blit(rtext, (x,y))
         
 
