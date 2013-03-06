@@ -34,6 +34,10 @@ class Display:
 # Default font. Games can define their own ones
         self.default_font=pygame.font.Font(CONF["default_font"],int(CONF["default_font_size"])) 
 
+# Default colors
+        self.default_color=self.string_to_color(self.CONF["default_color"])
+        self.default_background=self.string_to_color(self.CONF["default_background"])
+
 # Change default mouse pointer
 # "definition" is an array of strings containing a ascii map of an image made with "X" and "."
 # Width and height must be multiply of 8
@@ -44,6 +48,13 @@ class Display:
       hotspot = (size[0]/2, size[1]/2)  # Set hotspot to centre
       pygame.mouse.set_cursor(size, hotspot, data, mask)
 
+# Convert strings in real pygame colors
+    def string_to_color(self, val):
+        if len(val) == 3:
+            rgb=map(int,val)
+            return pygame.color.Color(rgb[0],rgb[1],rgb[2])
+        else:
+            return pygame.color.Color(val)
 
 
 # Clear the screen
@@ -79,16 +90,61 @@ class Display:
         return current_content
 
 # Print a text string, black and centered as default
-    def print_text(self, text, font="", color=(0,0,0), x=-1, y=-1):
+    def print_text(self, text, font="", color="", x=-1, y=-1):
         if not font:
             font=self.default_font
+        if not color:
+            font=self.CONF["default_color"]
+
         rtext = font.render(text, 1, color)
         if x == -1:
             x=self.centerx - rtext.get_width() / 2
         if y == -1:
             y=self.centery - rtext.get_height() / 2
         self.screen.blit(rtext, (x,y))
-        
+
+# Print a text box (multiline), black on white and centered as default
+    def print_textbox(self, text, font="", color="", background="", x=-1, y=-1):
+        if not font:
+            font=self.default_font
+        if not color:
+            color=self.default_color
+            print type(color)
+        if not background:
+            background=self.default_background
+
+        margin=20
+        font_height = font.get_height()
+        lines=text.split("\n")
+
+        surfaces = [font.render(line, True, tuple(color)) for line in lines]
+        max_width = max([s.get_width() for s in surfaces])
+        box = pygame.Surface((max_width+margin*2, len(lines)*font_height+margin*2), pygame.SRCALPHA)
+        box.fill(background)
+
+        for i in range(len(lines)):
+           box.blit(surfaces[i], (margin,i*font_height+margin))
+
+        if x == -1:
+            x=self.centerx - box.get_width() / 2
+        if y == -1:
+            y=self.centery - box.get_height() / 2
+        self.screen.blit(box, (x,y))
+    
+
+# Draw a box
+    def print_box(self, w, h, x=-1,y=-1, color=(0,0,0)):
+        if x == -1:
+            x=self.centerx - w / 2
+        if y == -1:
+            y=self.centery - h / 2
+
+        current_content=pygame.Surface((w,h))
+        current_content.blit(self.screen,(0,0),(x,y,w,h))
+
+        area=pygame.Rect((x,y),(w,h))
+        self.screen.fill(color, area)
+        return current_content
 
     
  

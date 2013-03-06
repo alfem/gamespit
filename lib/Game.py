@@ -57,18 +57,14 @@ class Game:
 #       Clean the screen
         self.clean()
         self.show_help()
-        self.wait(1000)
         self.clean()
 
 # Convert named or numeric colors to pygame colors
     def convert_colors(self, colors):
         for name, value in colors.iteritems():
             print " Defined color", name, value
-            if len(value) == 3:
-                rgb=map(int,value)
-                self.COLORS[name]=pygame.color.Color(rgb[0],rgb[1],rgb[2])
-            else:
-                self.COLORS[name]=pygame.color.Color(value)
+            self.COLORS[name]=self.DISPLAY.string_to_color(value)
+
 
 # Load every image in images folder
     def autoload_images(self, dir_name):
@@ -119,7 +115,7 @@ class Game:
     def show_help(self):
       if "help" in self.CONF["GAME"]:
           text=self.CONF['GAME']['help']
-          print self.CONF
-          self.DISPLAY.print_text(text)
+          self.DISPLAY.print_textbox(text)
           self.DISPLAY.show()
-
+          self.wait(50*len(self.CONF["GAME"]["help"]))
+  
