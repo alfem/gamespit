@@ -9,7 +9,6 @@
 
 import pygame
 from pygame.locals import *
-import time
 
 class Display:
     '''
@@ -32,6 +31,8 @@ class Display:
         else:
             self.screen=pygame.display.set_mode((self.width,self.height))
 
+# Default font. Games can define their own ones
+        self.default_font=pygame.font.Font(CONF["default_font"],int(CONF["default_font_size"])) 
 
 # Change default mouse pointer
 # "definition" is an array of strings containing a ascii map of an image made with "X" and "."
@@ -54,9 +55,21 @@ class Display:
     def fill(self,color):
         self.screen.fill(color)
 
+# Dim to a color
+    def fade(self, color=(0,0,0), speed=100):
+        color_layer=pygame.Surface(self.screen.get_size())
+        color_layer.fill(color)
+        for n in range(128):
+            color_layer.set_alpha(n*2)
+            self.screen.blit(color_layer,(0,0))
+            self.show()
+            pygame.time.wait((100-speed))
+        return
+
 # Show changes in the screen
     def show(self):
         pygame.display.flip()
+
 
 # Print an image and returns current screen content
     def print_image(self, image, x, y):
@@ -65,8 +78,10 @@ class Display:
         self.screen.blit(image, (x,y))
         return current_content
 
-# Print a text string, centered as default
-    def print_text(self, text, font, color=(0,0,0), x=-1, y=-1):
+# Print a text string, black and centered as default
+    def print_text(self, text, font="", color=(0,0,0), x=-1, y=-1):
+        if not font:
+            font=self.default_font
         rtext = font.render(text, 1, color)
         if x == -1:
             x=self.centerx - rtext.get_width() / 2

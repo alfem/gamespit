@@ -20,16 +20,16 @@ import Gui
 import Controls
 
 # Load a module or plugin dinamically
-def load_game(name, game_conf, display, controller):
+def load_game(name, conf, display, controller):
 
     print "Loading game:", name 
-    game_conf=ConfigObj(game_conf)
 
     fp, pathname, description = imp.find_module(name)
     try:
       module=imp.load_module(name, fp, pathname, description)
-      result=module.main(game_conf, display, controller) 
-    except Exception as e:
+      result=module.main(name, conf, display, controller) 
+    except ValueError as e:
+#    except Exception as e:
       print "ERROR:", e, e.args
       result="ERROR"
     finally:
@@ -51,13 +51,14 @@ def main():
 
     while True:
 # Load the main menu (main menu is a game itself)
-        game_conf=os.path.join(CONF["base_path"], "menu", "game.conf")
-        new_game=load_game("menu", game_conf, display, controller)
+        CONF.reload()
+        new_game=load_game("menu", CONF, display, controller)
 
 # Load selected game
         if new_game:
-            game_conf=os.path.join(CONF["base_path"], new_game, "game.conf")
-            new_game=load_game(new_game, game_conf, display, controller)
+            display.fade(speed=90)
+            CONF.reload()
+            new_game=load_game(new_game, CONF, display, controller)
 
 
 if __name__ == '__main__':

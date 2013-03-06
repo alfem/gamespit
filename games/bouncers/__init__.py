@@ -55,9 +55,9 @@ class Menu(Game):
 
 
 # Main
-def main(CONF, DISPLAY, CONTROLLER):
+def main(name, CONF, DISPLAY, CONTROLLER):
 
-    menu=Menu(CONF,DISPLAY,CONTROLLER)
+    menu=Menu(name, CONF,DISPLAY,CONTROLLER)
     menu.start()
     menu.loop()
 

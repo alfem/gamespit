@@ -89,7 +89,6 @@ class Menu(Game):
               self.DISPLAY.show()        
 
               user_input=self.CONTROLLER.wait_for_user_action()
-              print user_input
 
               self.DISPLAY.print_image(buffer, x, y)
 
@@ -117,19 +116,19 @@ class Menu(Game):
                               break
                       else:
                           selected_index += 3
-                      print "what!"
                   elif key_name == 'return':
                       return self.menu_items[index].name
 
 
               if controller_type == "M": #Mouse
-                  coords,button=user_input[1:]  
-                  if button == 4: #Mouse Wheel UP
+                  coords,button=user_input[1:] 
+
+                  if button == 4 or (button == 1 and coords[1] < 30): #Mouse Wheel UP
                       if offset > 0:
                           offset -= 9
                           selected_index = 0
                           break
-                  elif button == 5: #Mouse Wheel DOWN
+                  elif button == 5 or (button == 1 and coords[1] > self.DISPLAY.height - 30): #Mouse Wheel DOWN
                       if offset < len(self.menu_items) - 9: 
                           offset += 9
                           selected_index = 0
@@ -140,8 +139,8 @@ class Menu(Game):
                           return self.menu_items[index].name
 
 # Main
-def main(CONF, DISPLAY, CONTROLLER):
-    menu=Menu(CONF,DISPLAY,CONTROLLER)
+def main(name, CONF, DISPLAY, CONTROLLER):
+    menu=Menu(name, CONF,DISPLAY,CONTROLLER)
     menu.start()
     game_to_launch=menu.loop()
     return game_to_launch

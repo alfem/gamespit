@@ -9,7 +9,7 @@
 
 import pygame
 import os
-import inspect
+from configobj import ConfigObj
 
 class Game:    
     '''
@@ -25,7 +25,7 @@ class Game:
     Fonts are pre-rendered in many sizes, depending on your game config file.
     Use Game.fonts["one_name-one_size"] whenever you want to print text strings.
     '''
-    def __init__(self,CONF,DISPLAY,CONTROLLER):
+    def __init__(self, name, CONF, DISPLAY, CONTROLLER):
         self.CONF=CONF
         self.DISPLAY=DISPLAY
         self.CONTROLLER=CONTROLLER
@@ -34,14 +34,16 @@ class Game:
         self.FONTS={} 
         self.COLORS={}
 
-        base_path=os.path.dirname(inspect.stack()[1][1])
+        game_path=os.path.join(CONF["games_path"], name)
+        game_conf=os.path.join(game_path, "game.conf")
+        CONF.merge(ConfigObj(game_conf))
 
         self.convert_colors(CONF["COLORS"])
 #       Automagically load files into python objects (inspired on the "on rails" way)
-        self.autoload_images(os.path.join(base_path,"images"))
-        self.autoload_sounds(os.path.join(base_path,"sounds"))
+        self.autoload_images(os.path.join(game_path,"images"))
+        self.autoload_sounds(os.path.join(game_path,"sounds"))
         if "font_sizes" in CONF["GAME"]:
-            self.autoload_fonts(os.path.join(base_path,"fonts"),CONF["GAME"]["font_sizes"])
+            self.autoload_fonts(os.path.join(game_path,"fonts"),CONF["GAME"]["font_sizes"])
 
 #       Activate mouse pointer
         if CONF["GAME"]["mouse"] == "True":
@@ -54,7 +56,9 @@ class Game:
 
 #       Clean the screen
         self.clean()
-
+        self.show_help()
+        self.wait(1000)
+        self.clean()
 
 # Convert named or numeric colors to pygame colors
     def convert_colors(self, colors):
@@ -97,7 +101,7 @@ class Game:
                 for s in sizes:
                   print "   generating", name+s
                   self.FONTS[name+s]=pygame.font.Font(os.path.join(dir_name,file),int(s))
-            return
+        return
 
 
     def clean(self):
@@ -111,4 +115,11 @@ class Game:
     def wait(self,ms):
       pygame.time.wait(ms)
       return
+
+    def show_help(self):
+      if "help" in self.CONF["GAME"]:
+          text=self.CONF['GAME']['help']
+          print self.CONF
+          self.DISPLAY.print_text(text)
+          self.DISPLAY.show()
 
