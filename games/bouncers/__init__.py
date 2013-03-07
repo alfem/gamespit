@@ -20,19 +20,21 @@ class Menu(Game):
 
     def loop(self):
 
-      animals=("cat","cow","duck")
+      animals=("cat","cow","duck","dog","sheep")
       which=0
 
       while True:
           self.x=self.x+self.ix
           self.y=self.y+self.iy
+
           if self.x > self.DISPLAY.width-150 or self.x < 0:
               self.ix=-self.ix
 
           if self.y > self.DISPLAY.height-150:
-             self.iy=-self.iy
+             self.iy=0
 
-          self.iy=float(self.iy+0.01)
+          if self.iy != 0: 
+             self.iy=float(self.iy+0.03)
 
           self.fill()
           self.DISPLAY.print_image(self.IMAGES[animals[which]],self.x, self.y)
@@ -46,11 +48,15 @@ class Menu(Game):
               key_name,key_modifiers=user_input[1:]
 
               if key_name:
-                if key_name == "escape":
-                    break
-                which +=1
-                if which == len(animals):
-                    which = 0
+                if key_name == "escape": #quit game
+                    break 
+                elif key_name == "space": #make animal jump
+                     if self.iy == 0:
+                         self.iy= -5
+                else:
+                    which +=1
+                    if which == len(animals):
+                        which = 0
           self.wait(6)
 
 

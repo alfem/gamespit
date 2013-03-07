@@ -1,5 +1,0 @@
-
-ARROWS = Move selection box
-SPACE = Select Game
-
-SHIFT+ESC = Quit
