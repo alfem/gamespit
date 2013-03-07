@@ -40,17 +40,13 @@ class Menu(Game):
           self.DISPLAY.print_image(self.IMAGES[animals[which]],self.x, self.y)
           self.DISPLAY.show()
 
-          user_input=self.CONTROLLER.check_user_action()
+          input_type=self.CONTROLLER.check_user_action()
 
-          controller_type=user_input[0] 
-
-          if controller_type == "K": #Keyboard
-              key_name,key_modifiers=user_input[1:]
-
-              if key_name:
-                if key_name == "escape": #quit game
+          if input_type == "K": #Keyboard
+              if self.CONTROLLER.key_name:
+                if self.CONTROLLER.key_name == "escape": #quit game
                     break 
-                elif key_name == "space": #make animal jump
+                elif self.CONTROLLER.key_name == "space": #make animal jump
                      if self.iy == 0:
                          self.iy= -5
                 else:

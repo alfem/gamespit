@@ -88,19 +88,16 @@ class Menu(Game):
                                   
               self.DISPLAY.show()        
 
-              user_input=self.CONTROLLER.wait_for_user_action()
+              input_type=self.CONTROLLER.wait_for_user_action()
 
               self.DISPLAY.print_image(buffer, x, y)
 
-              controller_type=user_input[0] 
-
-              if controller_type == "K": #Keyboard
-                  key_name,key_modifiers=user_input[1:]
-                  if key_name == 'right' and c < 2:
+              if input_type == "K": #Keyboard
+                  if self.CONTROLLER.key_name == 'right' and c < 2:
                     selected_index += 1
-                  elif key_name == 'left' and c > 0:
+                  elif self.CONTROLLER.key_name == 'left' and c > 0:
                     selected_index -= 1
-                  elif key_name == 'up':
+                  elif self.CONTROLLER.key_name == 'up':
                       if l == 0:
                           if offset > 0:
                               offset -= 9
@@ -108,7 +105,7 @@ class Menu(Game):
                               break
                       else:
                           selected_index -= 3
-                  elif key_name == 'down':
+                  elif self.CONTROLLER.key_name == 'down':
                       if l == 2:
                           if offset < len(self.menu_items) - 9: 
                               offset += 9
@@ -116,25 +113,24 @@ class Menu(Game):
                               break
                       else:
                           selected_index += 3
-                  elif key_name == 'return':
+                  elif self.CONTROLLER.key_name == 'return':
                       return self.menu_items[index].name
 
 
-              if controller_type == "M": #Mouse
-                  coords,button=user_input[1:] 
+              if input_type == "M": #Mouse
 
-                  if button == 4 or (button == 1 and coords[1] < 30): #Mouse Wheel UP
+                  if self.CONTROLLER.mouse_button == 4 or (self.CONTROLLER.mouse_button == 1 and self.CONTROLLER.mouse_position[1] < 30): #Mouse Wheel UP
                       if offset > 0:
                           offset -= 9
                           selected_index = 0
                           break
-                  elif button == 5 or (button == 1 and coords[1] > self.DISPLAY.height - 30): #Mouse Wheel DOWN
+                  elif self.CONTROLLER.mouse_button == 5 or (self.CONTROLLER.mouse_button == 1 and self.CONTROLLER.mouse_position[1] > self.DISPLAY.height - 30): #Mouse Wheel DOWN
                       if offset < len(self.menu_items) - 9: 
                           offset += 9
                           selected_index = 0
                           break
                   else:
-                      index=self.coords2index(offset, coords)
+                      index=self.coords2index(offset, self.CONTROLLER.mouse_position)
                       if index:
                           return self.menu_items[index].name
 

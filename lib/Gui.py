@@ -109,7 +109,6 @@ class Display:
             font=self.default_font
         if not color:
             color=self.default_color
-            print type(color)
         if not background:
             background=self.default_background
 
