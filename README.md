@@ -1,7 +1,7 @@
 Games Pit
 =========
 
-A collection of small games for children.
+A (growing) collection of small games for children.
 
 Includes a simple launcher and an easy to use framework to make new games.
 
