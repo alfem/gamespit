@@ -25,6 +25,7 @@ class Display:
 # Pygame modules initialization. Avoid general initialization because in some hardware you have no sound'
         pygame.font.init()
         pygame.display.init()
+        pygame.mixer.init()
         
         if CONF["full_screen"] == "True":
             self.screen=pygame.display.set_mode((self.width,self.height),pygame.FULLSCREEN)
@@ -91,11 +92,12 @@ class Display:
 
 # Print a text string, black and centered as default
     def print_text(self, text, font="", color="", x=-1, y=-1):
+        
         if not font:
-            font=self.default_font
+           font=self.default_font
         if not color:
-            font=self.CONF["default_color"]
-
+            color=self.default_color
+ 
         rtext = font.render(text, 1, color)
         if x == -1:
             x=self.centerx - rtext.get_width() / 2

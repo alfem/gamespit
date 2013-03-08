@@ -34,7 +34,7 @@ class Game:
         self.FONTS={} 
         self.COLORS={}
 
-        game_path=os.path.join(CONF["games_path"], name)
+        game_path=os.path.join(os.path.realpath(CONF["games_path"]), name)
         game_conf=os.path.join(game_path, "game.conf")
         CONF.merge(ConfigObj(game_conf))
 
@@ -79,10 +79,12 @@ class Game:
 
 # Load every sound in sounds folder
     def autoload_sounds(self, dir_name):
+        print " Searching for sounds in", dir_name
         if os.path.isdir(dir_name):
             file_list=os.listdir(dir_name)
             for file in file_list:
                 name=os.path.splitext(file)[0]
+                print "  found", name
                 self.SOUNDS[name]=pygame.mixer.Sound(os.path.join(dir_name,file))
             return
 
@@ -104,8 +106,11 @@ class Game:
       self.DISPLAY.clean(self.COLORS["background"])
       return
 
-    def fill(self):
-      self.DISPLAY.fill(self.COLORS["background"])
+    def fill(self,color=""):
+      if color:
+          self.DISPLAY.fill(color)
+      else:
+          self.DISPLAY.fill(self.COLORS["background"])
       return
 
     def wait(self,ms):
@@ -117,5 +122,5 @@ class Game:
           text=self.CONF['GAME']['help']
           self.DISPLAY.print_textbox(text)
           self.DISPLAY.show()
-          self.wait(50*len(self.CONF["GAME"]["help"]))
+          self.wait(int(self.CONF['help_speed'])*len(self.CONF["GAME"]["help"]))
   
