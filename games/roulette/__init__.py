@@ -45,13 +45,12 @@ class Menu(Game):
 
               self.DISPLAY.show()
 
+              delay=spin*10/degrees # this makes roulette decelerate smoothly
+              self.wait(delay)
 
-          input_type=self.CONTROLLER.wait_for_user_action()
 
-          if input_type == "K": #Keyboard
-              char=self.CONTROLLER.key_name
-
-              if char == "escape": #quit game
+          if self.CONTROLLER.wait_for_user_action() == "K": #Keyboard
+              if self.CONTROLLER.key_name == "escape": #quit game
                   break 
 
 
