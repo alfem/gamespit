@@ -84,7 +84,11 @@ class Display:
 
 
 # Print an image and returns current screen content
-    def print_image(self, image, x, y):
+    def print_image(self, image, x=-1, y=-1):
+        if x == -1:
+            x=self.centerx - image.get_width() / 2
+        if y == -1:
+            y=self.centery - image.get_height() / 2
         current_content=pygame.Surface((image.get_width(),image.get_height()))
         current_content.blit(self.screen,(0,0),(x,y,image.get_width(),image.get_height()))
         self.screen.blit(image, (x,y))
