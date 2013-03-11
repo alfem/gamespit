@@ -16,6 +16,8 @@ from Game import Game
 class Menu(Game):
 
     def start(self):
+        self.ufo_score=0
+        self.starship_score=0
         return
 
     def loop(self):
@@ -33,8 +35,8 @@ class Menu(Game):
         while True:
 
           if ufo_movement <= 0:
-              ufo_direction=random.choice((-1,1))
-              ufo_movement=random.randint(50,300)
+              ufo_direction=random.choice((-2,2))
+              ufo_movement=random.randint(30,150)
 
           new_ufo_x=ufo_x + ufo_direction
           if new_ufo_x > 0 and new_ufo_x < self.DISPLAY.width - self.IMAGES["ufo"].get_width():
@@ -52,8 +54,8 @@ class Menu(Game):
 
           if starship=="firing":
               self.DISPLAY.print_image(self.IMAGES["missile"],missile_x,missile_y)
-              missile_y=missile_y-1
-              if missile_y==0:
+              missile_y=missile_y-2
+              if missile_y<=0:
                   starship="normal"
 
 
@@ -80,15 +82,37 @@ class Menu(Game):
           if new_starship_x > 0 and new_starship_x < self.DISPLAY.width - self.IMAGES["starship-"+starship].get_width():
               starship_x=new_starship_x
 
-
+# Missile hits UFO 
           if starship=="firing":
-              missile_rect=pygame.Rect((missile_x,missile_y,50,50))
-              if missile_rect.colliderect((ufo_x,ufo_y,200,100)):
-                  self.DISPLAY.print_image(self.IMAGES["explosion"],ufo_x,ufo_y)
+              missile_rect=pygame.Rect((missile_x+20,missile_y,32,32))
+              if missile_rect.colliderect((ufo_x,ufo_y,140,70)):
+                  self.DISPLAY.print_image(self.IMAGES["explosion"],missile_x,ufo_y)
                   self.DISPLAY.show()
+                  self.starship_score+=1
+                  self.show_score()
+                  starship="normal"
+                  ufo_x=random.randint(0, self.DISPLAY.width- self.IMAGES["ufo"].get_width())
+                  ufo_y=0
+              else:
+                  ufo_y=ufo_y+.6
+    
+# UFO hits spaceship
+          if ufo_y>self.DISPLAY.height-200:
+                  self.DISPLAY.print_image(self.IMAGES["explosion"],starship_x,starship_y)
+                  self.DISPLAY.show()
+                  self.ufo_score+=1
+                  self.show_score()
+                  starship="normal"
+                  ufo_x=random.randint(0, self.DISPLAY.width- self.IMAGES["ufo"].get_width())
+                  ufo_y=0
               
           self.wait(1)
 
+
+    def show_score(self):
+        self.DISPLAY.print_textbox("UFO:"+str(self.ufo_score)+" - STARSHIP:"+str(self.starship_score))
+        self.DISPLAY.show()
+        self.wait(3000)
 
 # Main
 def main(name, CONF, DISPLAY, CONTROLLER):
