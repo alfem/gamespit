@@ -87,7 +87,7 @@ class Menu(Game):
               buffer=self.DISPLAY.print_image(self.IMAGES['selector'], x, y)
                                   
               self.DISPLAY.show()        
-
+ 
               input_type=self.CONTROLLER.wait_for_user_action()
 
               self.DISPLAY.print_image(buffer, x, y)
@@ -131,7 +131,7 @@ class Menu(Game):
                           break
                   else:
                       index=self.coords2index(offset, self.CONTROLLER.mouse_position)
-                      if index:
+                      if index and index < len(self.menu_items):
                           return self.menu_items[index].name
 
 # Main

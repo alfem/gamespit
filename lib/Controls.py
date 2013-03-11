@@ -58,4 +58,5 @@ class Control:
                     self.mouse_position=event.pos
                     self.mouse_button=event.button 
                     return "M"
+            pygame.time.wait(10)
         return "N" 
