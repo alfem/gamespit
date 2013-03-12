@@ -28,15 +28,20 @@ class Control:
 
 # Check keyboard or mouse clicks and return without waiting
     def check_user_action(self):
-        self.reset()
         for event in pygame.event.get() :
+
             if event.type == pygame.KEYDOWN: # KEYBOARD
+                self.reset()
                 self.key_name = pygame.key.name(event.key)
                 self.key_mods=pygame.key.get_mods()
                 if self.key_mods & KMOD_LSHIFT and self.key_name == 'escape':
                     sys.exit(0)
                 return "K"
-            if event.type == pygame.MOUSEBUTTONDOWN: # MOUSE
+            if event.type == pygame.MOUSEMOTION: # MOUSE
+                self.reset()
+                self.mouse_position=event.pos
+            if event.type == pygame.MOUSEBUTTONDOWN: 
+                self.reset()
                 self.mouse_position=event.pos
                 self.mouse_button=event.button 
                 return "M"
