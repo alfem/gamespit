@@ -114,7 +114,8 @@ class Menu(Game):
                       else:
                           selected_index += 3
                   elif self.CONTROLLER.key_name == 'return':
-                      return self.menu_items[index].name
+                      if index and index < len(self.menu_items):
+                          return self.menu_items[index].name
 
 
               if input_type == "M": #Mouse
