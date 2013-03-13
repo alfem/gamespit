@@ -18,23 +18,26 @@ class Menu(Game):
 
     def loop(self):
 
+        color=1
         painting=False
 
         while True:
 
           if painting:
-              self.DISPLAY.print_image(self.IMAGES["brush"],self.CONTROLLER.mouse_position[0],self.CONTROLLER.mouse_position[1])
+              self.DISPLAY.print_image(self.IMAGES["brush"+str(color)],self.CONTROLLER.mouse_position[0],self.CONTROLLER.mouse_position[1])
               self.DISPLAY.show()
 
           input_type=self.CONTROLLER.check_user_action()
 
           if input_type == "M": #Mouse
              if self.CONTROLLER.mouse_button == 1:
-                 painting=True
-             if self.CONTROLLER.mouse_button == 3:
-                 painting=False
+                 painting=not painting
              if self.CONTROLLER.mouse_button == 2:
                  self.clean()
+             if self.CONTROLLER.mouse_button == 3:
+                 color+=1
+                 if color>4:
+                    color=1
           elif input_type == "K": #Keyboard
               if self.CONTROLLER.key_name == "escape": #quit game
                   break 
