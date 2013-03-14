@@ -22,7 +22,8 @@ import Controls
 # Load a module or plugin dinamically
 def load_game(name, conf, display, controller):
 
-    print "Loading game:", name 
+    if conf.as_bool("debug"):
+        print "Loading game:", name
 
     fp, pathname, description = imp.find_module(name)
     try:
@@ -40,6 +41,7 @@ def load_game(name, conf, display, controller):
 
 # Main
 def main():
+
 # Load main config file
     CONF = ConfigObj("gamespit.conf")
 

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 
-# Cu-Cu
+# Coo-Coo
 
 # Author: Alfonso E.M. <alfonso@el-magnifico.org>
 # License: Free (GPL2) 
@@ -14,13 +14,17 @@ from Game import Game
 class Menu(Game):
 
     def start(self):
+        self.max_faces=0
+        for i in self.IMAGES:
+            if i[0:4] == "face":
+                self.max_faces+=1
         return
 
     def loop(self):
 
         while True:
 
-          which=random.randint(1,14)
+          which=random.randint(1,self.max_faces)
 
           self.fill()
           self.DISPLAY.print_image(self.IMAGES["door-open"])

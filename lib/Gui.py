@@ -44,7 +44,8 @@ class Display:
 # Width and height must be multiply of 8
     def set_pointer(self, definition):
       size = (len(definition[0]), len(definition))
-      print "Pointer size:", size
+      if self.CONF.as_bool("debug"):
+          print "Pointer size:", size
       data, mask = pygame.cursors.compile(definition, black='O',white='0',xor='o') 
       hotspot = (size[0]/2, size[1]/2)  # Set hotspot to centre
       pygame.mouse.set_cursor(size, hotspot, data, mask)

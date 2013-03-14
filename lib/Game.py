@@ -62,42 +62,50 @@ class Game:
 # Convert named or numeric colors to pygame colors
     def convert_colors(self, colors):
         for name, value in colors.iteritems():
-            print " Defined color", name, value
+            if self.CONF.as_bool("debug"):
+                print " Defined color", name, value
             self.COLORS[name]=self.DISPLAY.string_to_color(value)
 
 
 # Load every image in images folder
     def autoload_images(self, dir_name):
-        print " Searching for images in", dir_name
+        if self.CONF.as_bool("debug"):
+            print " Searching for images in", dir_name
         if os.path.isdir(dir_name):
             file_list=os.listdir(dir_name)
             for file in file_list:
                 name=os.path.splitext(file)[0]
-                print "  found", name
+                if self.CONF.as_bool("debug"):
+                    print "  found", name
                 self.IMAGES[name]=pygame.image.load(os.path.join(dir_name,file))
             return
 
 # Load every sound in sounds folder
     def autoload_sounds(self, dir_name):
-        print " Searching for sounds in", dir_name
+        if self.CONF.as_bool("debug"):
+            print " Searching for sounds in", dir_name
         if os.path.isdir(dir_name):
             file_list=os.listdir(dir_name)
             for file in file_list:
                 name=os.path.splitext(file)[0]
-                print "  found", name
+                if self.CONF.as_bool("debug"):
+                    print "  found", name
                 self.SOUNDS[name]=pygame.mixer.Sound(os.path.join(dir_name,file))
             return
 
 # Load every font in fonts folder 
     def autoload_fonts(self, dir_name, sizes):
-        print " Searching for fonts in", dir_name
+        if self.CONF.as_bool("debug"):
+            print " Searching for fonts in", dir_name
         if os.path.isdir(dir_name):
             file_list=os.listdir(dir_name)
             for file in file_list:
                 name=os.path.splitext(file)[0]
-                print "  found", name
+                if self.CONF.as_bool("debug"):
+                    print "  found", name
                 for s in sizes:
-                  print "   generating", name+s
+                  if self.CONF.as_bool("debug"):
+                      print "   generating", name+s
                   self.FONTS[name+s]=pygame.font.Font(os.path.join(dir_name,file),int(s))
         return
 
@@ -122,5 +130,6 @@ class Game:
           text=self.CONF['GAME']['help']
           self.DISPLAY.print_textbox(text)
           self.DISPLAY.show()
-          self.wait(int(self.CONF['help_speed'])*len(self.CONF["GAME"]["help"]))
+          if not self.CONF.as_bool("debug"):
+              self.wait(int(self.CONF['help_speed'])*len(self.CONF["GAME"]["help"]))
   
