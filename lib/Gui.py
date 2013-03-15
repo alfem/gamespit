@@ -119,8 +119,8 @@ class Display:
         if not background:
             background=self.default_background
 
-        margin=20
         font_height = font.get_height()
+        margin=font_height/2
         lines=text.split("\n")
 
         surfaces = [font.render(line, True, tuple(color)) for line in lines]
