@@ -33,6 +33,8 @@ class Menu(Game):
 
           for spin in range(degrees):
               self.fill()
+          
+              self.DISPLAY.print_image(self.IMAGES["arrow"],y=150)
  
               for d in range(digits):
                   angle=d* 2*PI/digits + spin*2*PI/360
