@@ -114,7 +114,7 @@ class Menu(Game):
                       else:
                           selected_index += 3
                   elif self.CONTROLLER.key_name == 'return':
-                      if index and index < len(self.menu_items):
+                      if index < len(self.menu_items):
                           return self.menu_items[index].name
 
 
