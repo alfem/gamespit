@@ -26,6 +26,7 @@ class Game:
     Use Game.fonts["one_name-one_size"] whenever you want to print text strings.
     '''
     def __init__(self, name, CONF, DISPLAY, CONTROLLER):
+        self.name=name
         self.CONF=CONF
         self.DISPLAY=DISPLAY
         self.CONTROLLER=CONTROLLER

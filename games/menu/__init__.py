@@ -8,6 +8,7 @@
 # Version: 1.0 - 27/Feb/2013
 
 import os
+from subprocess import call
 import pygame
 from configobj import ConfigObj
 
@@ -32,13 +33,11 @@ class Menu(Game):
       self.menu_items=[]
       self.index=0
 
-      games_dir_name=os.path.join(os.path.dirname(__file__),"..")
-
-      if os.path.isdir(games_dir_name):
-          dir_list=os.listdir(games_dir_name)
+      if os.path.isdir(self.CONF["games_path"]):
+          dir_list=os.listdir(self.CONF["games_path"])
           for game in dir_list:
               if game != "menu":
-                  self.menu_items.append(MenuItem(game, os.path.join(games_dir_name,game))) 
+                  self.menu_items.append(MenuItem(game, os.path.join(self.CONF["games_path"],game))) 
 
       self.wait(1000)
  
@@ -61,6 +60,12 @@ class Menu(Game):
                 return offset+i
         return False 
 
+# Edit a file from game directory
+    def edit(self, game, filename):
+        fullname = os.path.join(self.CONF["games_path"],game,filename)
+        editor=self.CONF["GAME"]["editor"]
+        print editor, fullname
+        retcode = call(editor + " " + fullname, shell=True)
 
     def loop(self):
 
@@ -113,9 +118,13 @@ class Menu(Game):
                               break
                       else:
                           selected_index += 3
-                  elif self.CONTROLLER.key_name == 'return':
-                      if index < len(self.menu_items):
-                          return self.menu_items[index].name
+                  elif self.CONTROLLER.key_name == 'return' and index < len(self.menu_items):
+                      return self.menu_items[index].name
+                  elif bool(self.CONF["GAME"]["hacker_mode"]): #Hacker Mode! You can edit things!
+                      if self.CONTROLLER.key_name == 'c' and index < len(self.menu_items): 
+                          self.edit(self.menu_items[index].name, "game.conf")                      
+                      elif self.CONTROLLER.key_name == 'e' and index < len(self.menu_items): 
+                          self.edit(self.menu_items[index].name, "__init__.py")                      
 
 
               if input_type == "M": #Mouse
@@ -137,7 +146,7 @@ class Menu(Game):
 
 # Main
 def main(name, CONF, DISPLAY, CONTROLLER):
-    menu=Menu(name, CONF,DISPLAY,CONTROLLER)
+    menu=Menu(name, CONF, DISPLAY, CONTROLLER)
     menu.start()
     game_to_launch=menu.loop()
     return game_to_launch
