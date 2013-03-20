@@ -7,6 +7,7 @@ Includes a simple launcher and an easy to use framework to make new games.
 
 Install Games Pit in your Raspberry Pi and let your kids have fun with a remote mouse or keyboard. 
 
+Further information in the GitHub project wiki: https://github.com/alfem/gamespit/wiki
 
 QUICK INSTALL
 =============
