@@ -63,7 +63,7 @@ class Menu(Game):
 # Edit a file from game directory
     def edit(self, game, filename):
         fullname = os.path.join(self.CONF["games_path"],game,filename)
-        editor=self.CONF["GAME"]["editor"]
+        editor=self.CONF["editor"]
         print editor, fullname
         retcode = call(editor + " " + fullname, shell=True)
 
@@ -120,7 +120,7 @@ class Menu(Game):
                           selected_index += 3
                   elif self.CONTROLLER.key_name == 'return' and index < len(self.menu_items):
                       return self.menu_items[index].name
-                  elif bool(self.CONF["GAME"]["hacker_mode"]): #Hacker Mode! You can edit things!
+                  elif bool(self.CONF["hacker_mode"]): #Hacker Mode! You can edit things!
                       if self.CONTROLLER.key_name == 'c' and index < len(self.menu_items): 
                           self.edit(self.menu_items[index].name, "game.conf")                      
                       elif self.CONTROLLER.key_name == 'e' and index < len(self.menu_items): 
