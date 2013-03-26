@@ -16,9 +16,9 @@ QUICK INSTALL
 
   * A computer with linux: a Raspberry Pi, a netbook. A screen is useful to enjoy all the features :-)
   * Python 2.7
-  * Pygame libraries
+  * Pygame and ConfigObj libraries
 
-* Install pygame if it is not already in your system (apt-get install python-pygame)
+* Install pygame and configobj if they are not already in your system (apt-get install python-pygame python-configobj)
 
 * Download Games-Pit https://github.com/alfem/gamespit/archive/master.zip
 
