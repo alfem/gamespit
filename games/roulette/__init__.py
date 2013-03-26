@@ -16,28 +16,30 @@ from Game import Game
 class Menu(Game):
 
     def start(self):
+        self.numbers=int(self.CONF['GAME']['numbers'])
+        self.minimun_rounds=int(self.CONF['GAME']['minimun_rounds'])
+        self.maximun_rounds=int(self.CONF['GAME']['maximun_rounds'])
         return
 
     def loop(self):
 
         roulette_size=230
         PI=3.14
-        digits=6
 
         while True:
 
-          winner=random.randint(1,digits)
-          rounds=random.randint(3,6)
+          winner=random.randint(1,self.numbers)
+          rounds=random.randint(self.minimun_rounds,self.maximun_rounds)
 
-          degrees=360*rounds+winner*(360/digits)
+          degrees=360*rounds+winner*(360/self.numbers)
 
           for spin in range(degrees):
               self.fill()
           
               self.DISPLAY.print_image(self.IMAGES["arrow"],y=150)
  
-              for d in range(digits):
-                  angle=d* 2*PI/digits + spin*2*PI/360
+              for d in range(self.numbers):
+                  angle=d* 2*PI/self.numbers + spin*2*PI/360
                   x=self.DISPLAY.centerx+roulette_size*math.sin(angle) - 50
                   y=self.DISPLAY.centery+roulette_size*math.cos(angle) - 50
                   if d % 2:
@@ -48,6 +50,10 @@ class Menu(Game):
               self.DISPLAY.show()
 
               delay=spin*10/degrees # this makes roulette decelerate smoothly
+
+              if self.CONTROLLER.check_user_action() == "K" and self.CONTROLLER.key_name == "escape": #quit game
+                  break 
+
               self.wait(delay)
 
 
