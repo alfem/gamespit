@@ -93,7 +93,7 @@ class Menu(Game):
                     self.wait(4000)
                     break 
                 if score < 0:            
-                    self.DISPLAY.print_textbox("No points! You Loose",self.FONTS["OhTheHorror50"],self.COLORS["score"],self.COLORS["scoreboard"],y=self.DISPLAY.centery)
+                    self.DISPLAY.print_textbox("No points! You Lose",self.FONTS["OhTheHorror50"],self.COLORS["score"],self.COLORS["scoreboard"],y=self.DISPLAY.centery)
                     self.DISPLAY.show()
                     self.wait(4000)
                     break
