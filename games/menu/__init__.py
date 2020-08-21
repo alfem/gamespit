@@ -45,7 +45,7 @@ class Menu(Game):
 # Converts screen index to screen coordinates
     def i2coords(self, offset,i):
         index=offset+i
-        l=i / 3
+        l=int(i / 3)
         c=i % 3
         return index,l,c
 
