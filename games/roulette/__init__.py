@@ -31,7 +31,7 @@ class Menu(Game):
           winner=random.randint(1,self.numbers)
           rounds=random.randint(self.minimun_rounds,self.maximun_rounds)
 
-          degrees=360*rounds+winner*(360/self.numbers)
+          degrees=int(360*rounds+winner*(360/self.numbers))
 
           for spin in range(degrees):
               self.fill()
@@ -49,7 +49,7 @@ class Menu(Game):
 
               self.DISPLAY.show()
 
-              delay=spin*10/degrees # this makes roulette decelerate smoothly
+              delay=int(spin*10/degrees) # this makes roulette decelerate smoothly
 
               if self.CONTROLLER.check_user_action() == "K" and self.CONTROLLER.key_name == "escape": #quit game
                   break 
