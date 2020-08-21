@@ -45,15 +45,15 @@ class Display:
     def set_pointer(self, definition):
       size = (len(definition[0]), len(definition))
       if self.CONF.as_bool("debug"):
-          print "Pointer size:", size
+          print("Pointer size:", size)
       data, mask = pygame.cursors.compile(definition, black='O',white='0',xor='o') 
-      hotspot = (size[0]/2, size[1]/2)  # Set hotspot to centre
+      hotspot = (int(size[0]/2), int(size[1]/2))  # Set hotspot to centre
       pygame.mouse.set_cursor(size, hotspot, data, mask)
 
 # Convert strings in real pygame colors
     def string_to_color(self, val):
         if len(val) == 3:
-            rgb=map(int,val)
+            rgb=list(map(int,val))
             return pygame.color.Color(rgb[0],rgb[1],rgb[2])
         else:
             return pygame.color.Color(val)

@@ -23,7 +23,7 @@ import Controls
 def load_game(name, conf, display, controller):
 
     if conf.as_bool("debug"):
-        print "Loading game:", name
+        print("Loading game:", name)
 
     fp, pathname, description = imp.find_module(name)
     try:
@@ -31,7 +31,7 @@ def load_game(name, conf, display, controller):
       result=module.main(name, conf, display, controller) 
     except ValueError as e:
 #    except Exception as e:
-      print "ERROR:", e, e.args
+      print("ERROR:", e, e.args)
       result="ERROR"
     finally:
       if fp:

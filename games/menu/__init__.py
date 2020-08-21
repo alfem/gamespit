@@ -64,7 +64,7 @@ class Menu(Game):
     def edit(self, game, filename):
         fullname = os.path.join(self.CONF["games_path"],game,filename)
         editor=self.CONF["editor"]
-        print editor, fullname
+        print(editor, fullname)
         retcode = call(editor + " " + fullname, shell=True)
 
     def loop(self):
