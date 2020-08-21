@@ -58,7 +58,7 @@ class Menu(Game):
             box=pygame.Rect(x,y,200,150)
             if box.collidepoint(coords): 
                 return offset+i
-        return False 
+        return -1 
 
 # Edit a file from game directory
     def edit(self, game, filename):
@@ -141,7 +141,7 @@ class Menu(Game):
                           break
                   else:
                       index=self.coords2index(offset, self.CONTROLLER.mouse_position)
-                      if index and index < len(self.menu_items):
+                      if index >= 0 and index < len(self.menu_items):
                           return self.menu_items[index].name
 
 # Main
